@@ -14,17 +14,26 @@ downloadData <- function() {
 }
 
 downloadData()
+
+#Read and transform
 data<-read.csv("data/household_power_consumption.txt",sep =";")
-data$Date <- as.Date(data$Date, "%d/%m/%Y")
-data$Time <- strptime(data$Time,"%H:%M:%S")
+data$DateTime <- strptime(paste(data$Date, data$Time),"%d/%m/%Y %H:%M:%S")
+data$Date <-as.Date(data$Date,"%d/%m/%Y")
 
-df2<-subset(data, data$Date=="2007-02-01" | data$Date=="2007-02-02")
+# Filter data
+data_subset<-subset(data, data$Date=="2007-02-01" | data$Date=="2007-02-02")
 
-for(i in c(3:9)) {df2[,i] <- as.numeric(as.character(df2[,i]))}
+# Convert to numeric
+for(i in c(3:9)) {data_subset[,i] <- as.numeric(as.character(data_subset[,i]))}
 
+# Open device
 png(filename = "plot1.png", width = 480, height = 480, units = "px", bg = "white")
-par(mar = c(6, 6, 5, 4))
 
-hist(df2$Global_active_power, col = "red", main = "Global Active Power", xlab = "Global Active Power(kilowatts)")
+# Asign margins
+par(mar = c(6, 6, 6, 6))
 
+#Generates histogram
+hist(data_subset$Global_active_power, col = "red", main = "Global Active Power", xlab = "Global Active Power(kilowatts)")
+
+# Close device and save file
 dev.off()
