@@ -19,3 +19,12 @@ data$Date <- as.Date(data$Date, "%d/%m/%Y")
 data$Time <- strptime(data$Time,"%H:%M:%S")
 
 df2<-subset(data, data$Date=="2007-02-01" | data$Date=="2007-02-02")
+
+for(i in c(3:9)) {df2[,i] <- as.numeric(as.character(df2[,i]))}
+
+png(filename = "plot1.png", width = 480, height = 480, units = "px", bg = "white")
+par(mar = c(6, 6, 5, 4))
+
+hist(df2$Global_active_power, col = "red", main = "Global Active Power", xlab = "Global Active Power(kilowatts)")
+
+dev.off()
